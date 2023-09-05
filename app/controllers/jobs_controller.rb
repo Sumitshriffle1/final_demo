@@ -11,7 +11,7 @@ class JobsController < ApplicationController
   end
 
   def create
-    job = @current_user.jobs.new(user_params)
+    job = @current_user.jobs.new(job_params)
     if job.save
       render json: { message: "Job Created",data:job}
     else
@@ -20,7 +20,7 @@ class JobsController < ApplicationController
   end
 
   def update
-    if @job.update(user_params)
+    if @job.update(job_params)
       render json: { message: "Updated Successfully",data:@job}
     else
       render json: { errors: @job.errors.full_messages }, status: :unprocessable_entity
@@ -39,9 +39,47 @@ class JobsController < ApplicationController
     render json: @job
   end
 
+  def search_by_name
+    if params[:job_title].present?
+      job = Job.where("job_title like '%#{params[:job_title].strip}%'")
+      if job.empty?
+        render json: { message: 'No data found...' }
+      else
+        render json: job
+      end
+    else
+      render json: { message: 'No record found...' }
+    end
+  end
 
+  def search_by_company_name
+    if params[:company_name].present?
+      job = Job.where("company_name like '%#{params[:company_name].strip}%'")
+      if job.empty?
+        render json: { message: 'No data found...' }
+      else
+        render json: job
+      end
+    else
+      render json: { message: 'No record found...' }
+    end
+  end
+
+  def search_by_category
+    if params[:job_category].present?
+      job = Job.where("job_category like '%#{params[:job_category].strip}%'")
+      if job.empty?
+        render json: { message: 'No data found...' }
+      else
+        render json: job
+      end
+    else
+      render json: { message: 'No record found...' }
+    end
+  end
+  
   private
-
+  
   def set_job
     @job = Job.find_by_id(params[:id])
     unless @job
@@ -49,7 +87,7 @@ class JobsController < ApplicationController
     end
   end
 
-  def user_params
+  def job_params
     params.permit(:job_title,:company_name,:job_category,:job_description,:location,:salary,:post)
   end
 end

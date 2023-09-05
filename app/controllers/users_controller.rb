@@ -32,21 +32,37 @@ class UsersController < ApplicationController
   end
 
   # ..................Update user......................
+  # def update
+  #   user = User.find(@current_user.id)
+  #   if user.update(set_params)
+  #     render json: { message: 'Updated successfully......', data: user }
+  #   else
+  #     render json: { errors: user.errors.full_messages }
+  #   end
+  # end
+
+  # # ..................Destroy user......................
+  # def destroy
+  #   user=User.destroy(@current_user.id)
+  #   render json: { message: 'Deleted successfully', data: user }
+  # end
+
   def update
-    user = User.find(@current_user.id)
-    if user.update(set_params)
-      render json: { message: 'Updated successfully......', data: user }
+    if @current_user.update(user_params)
+      render json: { message: 'User updated', data: @current_user}
     else
-      render json: { errors: user.errors.full_messages }
+      render json: { errors: @current_user.errors.full_messages }
     end
   end
-
-  # ..................Destroy user......................
+  
   def destroy
-    user=User.destroy(@current_user.id)
-    render json: { message: 'Deleted successfully', data: user }
+    if @current_user.destroy
+      render json: { message: 'User deleted' }
+    else
+      render json: { errors: @current_user.errors.full_messages }
+    end
   end
-
+    
   # ..................Show user......................
   def show
     render json: @current_user

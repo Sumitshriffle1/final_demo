@@ -1,7 +1,7 @@
 class User < ApplicationRecord
-  has_one :profile
-  has_many :applies
-  has_many :jobs
+  has_one :profile,dependent: :destroy
+  has_many :applies,dependent: :destroy
+  has_many :jobs,dependent: :destroy
   has_secure_password
 
   validates :name, :email, :password_digest, :contact, :type, presence: true
