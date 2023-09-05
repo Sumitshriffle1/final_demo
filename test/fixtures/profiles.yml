@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  skills: MyString
+  dob: 2023-09-05 11:23:02
+  experience: MyText
+
+two:
+  skills: MyString
+  dob: 2023-09-05 11:23:02
+  experience: MyText
