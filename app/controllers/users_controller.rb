@@ -1,18 +1,5 @@
 class UsersController < ApplicationController
   skip_before_action :authenticate_request, only: [:create, :user_login]
-  #------------------Show All Users---------------------
-  def index
-    if @current_user.type=="JobRecruiter"
-      user = User.all
-      if user.present?
-        render json: user
-      else
-        render json: { message: "No Users exists" }
-      end
-    else
-      render json: { message: "You cant see all users"}
-    end
-  end
 
   # ..................Create User......................
   def create
@@ -52,14 +39,27 @@ class UsersController < ApplicationController
 
   # ..................Show user......................
   def show
-    user = User.find_by_id(params[:id])
+    user = @current_user
     if user.present?
       render json: user
     else
-      render json: "user not found"
+      render json: "User not found"
     end
   end
 
+  def search_user_by_name
+    if params[:name].present?
+      user = User.where("name like '%#{params[:name].strip}%'")
+      if user.empty?
+        render json: { message: 'No data found...' }
+      else
+        render json: user
+      end
+    else
+      render json: { message: 'No record found...' }
+    end
+  end
+  
   private
   def set_params
     params.permit(:name,:email,:password_digest,:contact,:type)

@@ -94,9 +94,9 @@ class JobsController < ApplicationController
     params.permit(:job_title,:company_name,:job_category,:job_description,:location,:salary,:post)
   end
 
-  def only_recruiter_has_access
-    unless @current_user.type == "JobRecruiter"
-      render json: "You do not have access...."
-    end
-  end
+  # def only_recruiter_has_access
+  #   unless @current_user.type == "JobRecruiter"
+  #     render json: "You do not have access...."
+  #   end
+  # end
 end

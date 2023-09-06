@@ -1,0 +1,2 @@
+module JobRecruitersHelper
+end
