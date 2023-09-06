@@ -41,7 +41,7 @@ class ProfilesController < ApplicationController
   def update
     profile = @current_user.profile
     if profile.update(profile_params)
-      render json: { message: 'User Profile updated', data: @current_user}
+      render json: { message: 'User Profile updated', data:profile}
     else
       render json: { errors: @current_user.profile.errors.full_messages}
     end
@@ -70,13 +70,12 @@ class ProfilesController < ApplicationController
   # end
 
   def profile_params
-    params.permit(:skills, :education, :experience)
+    params.permit(:skills, :education, :experience,:image)
   end
 
   def check_for_existing_profile
-    if @current_user.user_profile
+    if @current_user.profile
       render json: 'Some message about already having a profile'
     end
   end
-
 end

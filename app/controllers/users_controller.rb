@@ -1,13 +1,16 @@
 class UsersController < ApplicationController
   skip_before_action :authenticate_request, only: [:create, :user_login]
-
   #------------------Show All Users---------------------
   def index
-    user = User.all
-    if user.present?
-      render json: user
+    if @current_user.type=="JobRecruiter"
+      user = User.all
+      if user.present?
+        render json: user
+      else
+        render json: { message: "No Users exists" }
+      end
     else
-      render json: { message: "No Users exists" }
+      render json: { message: "You cant see all users"}
     end
   end
 
@@ -31,22 +34,6 @@ class UsersController < ApplicationController
     end
   end
 
-  # ..................Update user......................
-  # def update
-  #   user = User.find(@current_user.id)
-  #   if user.update(set_params)
-  #     render json: { message: 'Updated successfully......', data: user }
-  #   else
-  #     render json: { errors: user.errors.full_messages }
-  #   end
-  # end
-
-  # # ..................Destroy user......................
-  # def destroy
-  #   user=User.destroy(@current_user.id)
-  #   render json: { message: 'Deleted successfully', data: user }
-  # end
-
   def update
     if @current_user.update(user_params)
       render json: { message: 'User updated', data: @current_user}
@@ -54,7 +41,7 @@ class UsersController < ApplicationController
       render json: { errors: @current_user.errors.full_messages }
     end
   end
-  
+
   def destroy
     if @current_user.destroy
       render json: { message: 'User deleted' }
@@ -62,10 +49,15 @@ class UsersController < ApplicationController
       render json: { errors: @current_user.errors.full_messages }
     end
   end
-    
+
   # ..................Show user......................
   def show
-    render json: @current_user
+    user = User.find_by_id(params[:id])
+    if user.present?
+      render json: user
+    else
+      render json: "user not found"
+    end
   end
 
   private

@@ -1,5 +1,6 @@
 class JobsController < ApplicationController
   before_action :set_job, only: [:show, :update, :destroy]
+  before_action :only_recruiter_has_access,only: [:create,:update,:destroy]
 
   def index
     job = Job.all
@@ -20,15 +21,17 @@ class JobsController < ApplicationController
   end
 
   def update
-    if @job.update(job_params)
-      render json: { message: "Updated Successfully",data:@job}
+    job = @current_user.jobs
+    if job.update(job_params)
+      render json: { message: 'User Profile updated', data:job}
     else
-      render json: { errors: @job.errors.full_messages }, status: :unprocessable_entity
+      render json: { errors: apply.errors.full_messages}
     end
   end
 
   def destroy
-    if @job.destroy
+    job = @current_user.jobs
+    if job.destroy
       render json: { message: 'Deleted successfully' }
     else
       render json: { message: 'Failed to delete the job' }
@@ -77,9 +80,9 @@ class JobsController < ApplicationController
       render json: { message: 'No record found...' }
     end
   end
-  
+
   private
-  
+
   def set_job
     @job = Job.find_by_id(params[:id])
     unless @job
@@ -89,5 +92,11 @@ class JobsController < ApplicationController
 
   def job_params
     params.permit(:job_title,:company_name,:job_category,:job_description,:location,:salary,:post)
+  end
+
+  def only_recruiter_has_access
+    unless @current_user.type == "JobRecruiter"
+      render json: "You do not have access...."
+    end
   end
 end
