@@ -22,7 +22,7 @@ class UsersController < ApplicationController
   end
 
   def update
-    if @current_user.update(user_params)
+    if @current_user.update(set_params)
       render json: { message: 'User updated', data: @current_user}
     else
       render json: { errors: @current_user.errors.full_messages }
@@ -59,7 +59,7 @@ class UsersController < ApplicationController
       render json: { message: 'No record found...' }
     end
   end
-  
+
   private
   def set_params
     params.permit(:name,:email,:password_digest,:contact,:type)

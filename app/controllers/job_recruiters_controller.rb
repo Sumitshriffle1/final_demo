@@ -5,7 +5,7 @@ class JobRecruitersController < ApplicationController
     # if @current_user.type=="JobRecruiter"
       user = User.all
       if user.present?
-        render json: user,serializer: UserSerializer
+        render json: user
       else
         render json: { message: "No Users exists" }
       end

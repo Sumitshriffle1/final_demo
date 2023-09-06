@@ -57,7 +57,12 @@ class ProfilesController < ApplicationController
   end
 
   def show
-    render json: @current_user.profile
+    profile = @current_user.profile
+    if profile.present?
+      render json: profile
+    else
+      render json: 'sorry profile not found..'
+    end 
   end
 
   private

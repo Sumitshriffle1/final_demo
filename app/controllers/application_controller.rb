@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  protect_from_forgery
   include JsonWebToken
 
 	before_action :authenticate_request
@@ -30,7 +31,7 @@ class ApplicationController < ActionController::Base
 
   def job_seeker_can_apply
     unless @current_user.type == "JobSeeker"
-      render json: "only JobSeeker can apply for this job...."
+      render json: "only JobSeeker has access...."
     end
   end
 end

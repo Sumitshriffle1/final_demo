@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   post "user_login", to: "users#user_login"
-  get 'search_user_by_name',to:'jobs#search_user_by_name'
+  get 'search_user_by_name',to:'users#search_user_by_name'
   resource :users
 
   put 'reject_apply',to: 'job_recruiters#reject_apply'

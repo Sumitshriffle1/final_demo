@@ -23,15 +23,14 @@ class JobsController < ApplicationController
   def update
     job = @current_user.jobs
     if job.update(job_params)
-      render json: { message: 'User Profile updated', data:job}
+      render json: { message: 'Updated successfully.....'}
     else
       render json: { errors: apply.errors.full_messages}
     end
   end
 
   def destroy
-    job = @current_user.jobs
-    if job.destroy
+    if @job.destroy
       render json: { message: 'Deleted successfully' }
     else
       render json: { message: 'Failed to delete the job' }
