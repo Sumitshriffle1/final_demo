@@ -7,7 +7,7 @@ class UsersController < ApplicationController
     if user.save
       render json: { message:"User Created"}
     else
-      render json: { errors: user.errors.full_messages }
+      render json: { errors: user.errors.full_messages },status: :unprocessable_entity
     end
   end
 
@@ -17,23 +17,25 @@ class UsersController < ApplicationController
       token= jwt_encode(user_id: user.id)
       render json: { message: "Logged In Successfully..", token: token }
     else
-      render json: { error: "Please Check your Email And Password....." }
+      render json: { error: "Please Check your Email And Password....." },status: :unprocessable_entity
     end
   end
 
+  #-------------------Update user-----------------------
   def update
     if @current_user.update(set_params)
-      render json: { message: 'User updated', data: @current_user}
+      render json: { message: 'User updated successfully...'}
     else
-      render json: { errors: @current_user.errors.full_messages }
+      render json: { errors: @current_user.errors.full_messages },status: :unprocessable_entity
     end
   end
 
+  #-------------------Delete user------------------------
   def destroy
     if @current_user.destroy
       render json: { message: 'User deleted' }
     else
-      render json: { errors: @current_user.errors.full_messages }
+      render json: { errors: @current_user.errors.full_messages },status: :unprocessable_entity
     end
   end
 
@@ -43,20 +45,21 @@ class UsersController < ApplicationController
     if user.present?
       render json: user
     else
-      render json: "User not found"
+      render json: "User not found", status: :not_found
     end
   end
 
+  #-------------------Search_by_user_name--------------
   def search_user_by_name
     if params[:name].present?
       user = User.where("name like '%#{params[:name].strip}%'")
       if user.empty?
-        render json: { message: 'No data found...' }
+        render json: { message: 'No data found...' }, status: :not_found
       else
         render json: user
       end
     else
-      render json: { message: 'No record found...' }
+      render json: { message: 'No record found...' }, status: :not_found
     end
   end
 

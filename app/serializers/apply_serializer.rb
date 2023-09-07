@@ -1,8 +1,8 @@
 class ApplySerializer < ActiveModel::Serializer
-  attributes :id,:name,:job_title,:company_name,:job_category,:resume,:status
+  attributes :id,:status,:user_id,:job_title,:job_category,:company_name,:resume
 
-  def name
-    object.user.name
+  def resume
+    object.resume.url
   end
 
   def job_title

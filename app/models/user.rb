@@ -7,5 +7,5 @@ class User < ApplicationRecord
   validates :name, :email, :password_digest, :contact, :type, presence: true
   validates :email, uniqueness: { case_sensitive: false }, format: {with: /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i, message: "email is not valid"}
   validates :password_digest, length: { minimum: 8 }
-  validates :contact, length: { is: 10 }, uniqueness: true
+  validates :contact,format: {with:/\d[0-9]\z/}, length: { is: 10 }, uniqueness: true
 end

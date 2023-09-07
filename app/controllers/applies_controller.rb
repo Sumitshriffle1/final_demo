@@ -1,12 +1,13 @@
 class AppliesController < ApplicationController
-  before_action :only_recruiter_has_access,only: [:update]
-  before_action :job_seeker_can_apply,only:[:create,:destroy,:show]
+  before_action :job_seeker_has_access
 
-  # def index
-  #   view_apply = Apply.all
-  #   render json: view_apply, status: :ok
-  # end
+  #-------------JobSeeker_can_show_all_own_apply---------
+  def index
+    seeker_apply=@current_user.applies.all
+    render json: seeker_apply
+  end
 
+  #-----------------JobSeeker_can_apply--------------------
   def create
     apply = @current_user.applies.new(apply_params)
     if apply
@@ -15,77 +16,35 @@ class AppliesController < ApplicationController
       if apply.save
         render json: apply, status: :ok
       else
-        render json: { error: apply.errors.full_messages }
+        render json: { error: apply.errors.full_messages }, status: :unprocessable_entity
       end
     else
-      render json: { message: 'Id not found' }
+      render json: { message: 'Id not found' }, status: :not_found
     end
   end
 
-  def update
-    apply = @current_user.applies
-    if apply.update(status: 'accepted')
-      render json: apply, status: :ok
-    else
-      render json: apply.errors, status: :unprocessable_entity
-    end
-  end
-
+  #------------------JobSeeker_can_delete_own_apply---------------
   def destroy
-    apply = @current_user.applies
+    apply = @current_user.applies.find(params[:id])
     if apply.destroy
       render json: { message: 'Apply deleted...'}
     else
-      render json: { errors: apply.errors.full_messages }
+      render json: { errors: apply.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
+  #---------------JobSeeker_can_see_pericular_apply--------------
   def show
-    render json: @current_user.applies
+    apply = @current_user.applies.find(params[:id])
+    if apply.present?
+      render json: apply
+    else
+      render json: "Apply not found", status: :not_found
+    end
   end
-
-  # def reject_apply
-  #   apply = @current_user.applies
-  #   if apply.update(status: 'rejected')
-  #     render json: apply,status: :ok
-  #   else
-  #     render json: apply.errors, status: :unprocessable_entity
-  #   end
-  # end
-
-  # def find_by_id
-  #   apply = Apply.find_by_id(params[:id])
-  #   if apply.present?
-  #     render json: apply
-  #   else
-  #     render json: "Id not found"
-  #   end
-  # end
-
-  # def view_rejected_apply
-  #   rejected_apply = Apply.where(status: 'rejected')
-  #   render json: rejected_apply, status: :ok
-  # end
-
-  # def view_accepted_apply
-  #   accepted_apply = Apply.where(status: 'accepted')
-  #   render json: accepted_apply, status: :ok
-  # end
 
   private
   def apply_params
     params.permit(:job_id,:resume)
   end
-
-  # def job_recruiter_access
-  #   unless @current_user.type == "JobRecruiter"
-  #     render json: "You do not have access...."
-  #   end
-  # end
-
-  # def job_seeker_can_apply
-  #   unless @current_user.type == "JobSeeker"
-  #     render json: "only JobSeeker can apply for this job...."
-  #   end
-  # end
 end

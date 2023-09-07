@@ -1,6 +1,4 @@
 class ApplicationController < ActionController::Base
-  # protect_from_forgery
-  skip_before_action :verify_authenticity_token
   include ActiveStorage::SetCurrent
   before_action do
     ActiveStorage::Current.url_options = { protocol: request.protocol, host: request.host, port: request.port }
@@ -28,15 +26,22 @@ class ApplicationController < ActionController::Base
 		@current_user
 	end
 
+  #-----------------JobRecruiter access--------------
   def only_recruiter_has_access
     unless @current_user.type == "JobRecruiter"
       render json: "You do not have access...."
     end
   end
 
-  def job_seeker_can_apply
+  #-----------------JobSeeker access--------------
+  def job_seeker_has_access
     unless @current_user.type == "JobSeeker"
       render json: "only JobSeeker has access...."
     end
+  end
+
+  #------------------Check url---------------------
+  def invalid_url
+    render json: { error: "Invalid URL" }, status: :not_found
   end
 end
