@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   get 'search_by_company_name',to:'jobs#search_by_company_name'
   get 'search_by_category',to:'jobs#search_by_category'
   resources :jobs
+  resource :profiles
 
   resource :applies
 end

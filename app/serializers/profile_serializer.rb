@@ -1,3 +1,6 @@
 class ProfileSerializer < ActiveModel::Serializer
-  attributes :image, :skills, :education, :experience
+  attributes :skills, :education, :experience, :image
+  def image
+    object.image.url
+  end
 end
