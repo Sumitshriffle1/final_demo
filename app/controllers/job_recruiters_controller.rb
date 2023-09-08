@@ -27,15 +27,11 @@ class JobRecruitersController < ApplicationController
 
   #---------------------view_all_apllied_jobs------------
   def view_applied_jobs
-    begin
-      job= Apply.all
-      if job.present?
-        render json: job
-      else
-        render json: "Nobody apply for job"
-      end
-    rescue
-      render json: "Job Not Found", status: :not_found
+    job= Apply.all
+    if job.present?
+      render json: job
+    else
+      render json: "Nobody apply for job"
     end
   end
 
