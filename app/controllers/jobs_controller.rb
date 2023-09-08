@@ -4,9 +4,9 @@ class JobsController < ApplicationController
 
   #--------------Show all jobs---------------------
   def index
-    job = Job.all
-    if job.present?
-      render json: job
+    jobs = Job.all
+    if jobs.present?
+      render json: jobs
     else
       render json: { message: "No Jobs Available"}
     end
@@ -56,11 +56,11 @@ class JobsController < ApplicationController
   #------------------search_jobs_by_job_title------------------
   def search_by_job_title
     if params[:job_title].present?
-      job = Job.where("job_title like '%#{params[:job_title].strip}%'")
-      if job.empty?
+      jobs = Job.where("job_title like '%#{params[:job_title].strip}%'")
+      if jobs.empty?
         render json: { message: 'No data found...' }, status: :not_found
       else
-        render json: job
+        render json: jobs
       end
     else
       render json: { message: 'No record found...' }, status: :not_found
@@ -70,11 +70,11 @@ class JobsController < ApplicationController
   #-------------------search_jobs_by_company_name-------------
   def search_by_company_name
     if params[:company_name].present?
-      job = Job.where("company_name like '%#{params[:company_name].strip}%'")
-      if job.empty?
+      jobs = Job.where("company_name like '%#{params[:company_name].strip}%'")
+      if jobs.empty?
         render json: { message: 'No data found...' }, status: :not_found
       else
-        render json: job
+        render json: jobs
       end
     else
       render json: { message: 'No record found...' }, status: :not_found
@@ -84,11 +84,11 @@ class JobsController < ApplicationController
   #-------------------search_jobs_by_category-----------------
   def search_by_category
     if params[:job_category].present?
-      job = Job.where("job_category like '%#{params[:job_category].strip}%'")
-      if job.empty?
+      jobs = Job.where("job_category like '%#{params[:job_category].strip}%'")
+      if jobs.empty?
         render json: { message: 'No data found...' }, status: :not_found
       else
-        render json: job
+        render json: jobs
       end
     else
       render json: { message: 'No record found...' }, status: :not_found

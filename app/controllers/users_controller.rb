@@ -52,11 +52,11 @@ class UsersController < ApplicationController
   #-------------------Search_by_user_name--------------
   def search_user_by_name
     if params[:name].present?
-      user = User.where("name like '%#{params[:name].strip}%'")
-      if user.empty?
+      users = User.where("name like '%#{params[:name].strip}%'")
+      if users.empty?
         render json: { message: 'No data found...' }, status: :not_found
       else
-        render json: user
+        render json: users
       end
     else
       render json: { message: 'No record found...' }, status: :not_found

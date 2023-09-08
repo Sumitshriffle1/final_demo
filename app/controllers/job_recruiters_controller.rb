@@ -4,9 +4,9 @@ class JobRecruitersController < ApplicationController
 
   #-----------------Show_all_users------------
   def index
-    user = User.all
-    if user.present?
-      render json: user
+    users = User.all
+    if users.present?
+      render json: users
     else
       render json: { message: "No Users exists" }
     end
@@ -27,9 +27,9 @@ class JobRecruitersController < ApplicationController
 
   #---------------------view_all_apllied_jobs------------
   def view_applied_jobs
-    job= Apply.all
-    if job.present?
-      render json: job
+    jobs= Apply.all
+    if jobs.present?
+      render json: jobs
     else
       render json: "Nobody apply for job"
     end
@@ -39,9 +39,9 @@ class JobRecruitersController < ApplicationController
   def show
     begin
       job= @current_user.jobs.find(params[:id])
-      applied_job = job.applies
-      unless applied_job.empty?
-        render json: applied_job
+      applied_jobs = job.applies
+      unless applied_jobs.empty?
+        render json: applied_jobs
       else
         render json: "Nobody apply for job"
       end
@@ -53,9 +53,9 @@ class JobRecruitersController < ApplicationController
 
   #---------------view_all_rejected_jobs--------------
   def view_rejected_apply
-    rejected_apply = Apply.where(status: 'rejected')
-    if rejected_apply.present?
-      render json: rejected_apply, status: :ok
+    rejected_applies = Apply.where(status: 'rejected')
+    if rejected_applies.present?
+      render json: rejected_applies, status: :ok
     else
       render json: "No rejected applies"
     end
@@ -63,9 +63,9 @@ class JobRecruitersController < ApplicationController
 
   #---------------view_all_accepted_jobs---------------
   def view_accepted_apply
-    accepted_apply = Apply.where(status: 'accepted')
-    if accepted_apply.present?
-      render json: accepted_apply, status: :ok
+    accepted_applies = Apply.where(status: 'accepted')
+    if accepted_applies.present?
+      render json: accepted_applies, status: :ok
     else
       render json: "No accepted applies"
     end

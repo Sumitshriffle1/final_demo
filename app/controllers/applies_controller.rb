@@ -3,8 +3,8 @@ class AppliesController < ApplicationController
 
   #-------------JobSeeker_can_show_all_own_apply---------
   def index
-    seeker_apply=@current_user.applies.all
-    render json: seeker_apply
+    seeker_applies=@current_user.applies.all
+    render json: seeker_applies
   end
 
   #-----------------JobSeeker_can_apply--------------------
