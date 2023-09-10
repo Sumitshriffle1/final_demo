@@ -14,6 +14,7 @@ class AppliesController < ApplicationController
       apply.status = 'Pending..'
 
       if apply.save
+        ApplyMailer.with(user: @current_user).applied_mail.deliver_now
         render json: apply, status: :ok
       else
         render json: { error: apply.errors.full_messages }, status: :unprocessable_entity
@@ -46,5 +47,10 @@ class AppliesController < ApplicationController
   private
   def apply_params
     params.permit(:job_id,:resume)
+  end
+  def job_seeker_has_access
+    unless @current_user.type == "JobSeeker"
+      render json: "only JobSeeker has access...."
+    end
   end
 end

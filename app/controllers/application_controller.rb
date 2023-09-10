@@ -21,22 +21,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  # ..............Check user.....................
-	def current_user
-		@current_user
-	end
-
   #-----------------JobRecruiter access--------------
   def only_recruiter_has_access
     unless @current_user.type == "JobRecruiter"
       render json: "You do not have access...."
-    end
-  end
-
-  #-----------------JobSeeker access--------------
-  def job_seeker_has_access
-    unless @current_user.type == "JobSeeker"
-      render json: "only JobSeeker has access...."
     end
   end
 
