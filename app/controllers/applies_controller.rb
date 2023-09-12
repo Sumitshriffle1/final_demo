@@ -1,4 +1,5 @@
 class AppliesController < ApplicationController
+  before_action :authenticate_request
   before_action :job_seeker_has_access
 
   #-------------JobSeeker_can_show_all_own_apply---------

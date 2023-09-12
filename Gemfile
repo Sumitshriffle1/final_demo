@@ -39,6 +39,9 @@ gem "bcrypt", "~> 3.1.7"
 gem "jwt"
 
 gem "active_model_serializers"
+gem "activeadmin"
+gem "devise"
+gem "sass-rails"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ mingw mswin x64_mingw jruby ]

@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  skip_before_action :authenticate_request, only: [:create, :user_login]
+  before_action :authenticate_request, except: [:create, :user_login]
 
   # ..................Create User......................
   def create

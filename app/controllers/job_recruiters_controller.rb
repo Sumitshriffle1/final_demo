@@ -1,4 +1,5 @@
 class JobRecruitersController < ApplicationController
+  before_action :authenticate_request
   before_action :only_recruiter_has_access
   before_action :set_param, only: [:update]
 

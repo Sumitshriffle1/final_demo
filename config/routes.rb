@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  devise_for :admin_users, ActiveAdmin::Devise.config
+  ActiveAdmin.routes(self)
   post "user_login", to: "users#user_login"
   resource :users do
     get 'search_user_by_name',on: :collection

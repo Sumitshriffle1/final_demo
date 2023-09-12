@@ -1,4 +1,5 @@
 class ProfilesController < ApplicationController
+  before_action :authenticate_request
   before_action :check_for_existing_profile, only: [:create]
 
   #-------------------Create_profile-----------------------
