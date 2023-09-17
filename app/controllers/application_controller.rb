@@ -26,9 +26,4 @@ class ApplicationController < ActionController::Base
       render json: "You do not have access...."
     end
   end
-
-  #------------------Check url---------------------
-  def invalid_url
-    render json: { error: "Invalid URL" }, status: :not_found
-  end
 end

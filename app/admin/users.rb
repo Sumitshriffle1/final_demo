@@ -6,11 +6,16 @@ ActiveAdmin.register User do
     id_column
     column :name
     column :email
-    column :password_digest
     column :contact
     column :type
     actions
   end
+  filter :name
+  filter :email
+  filter :contact
+  filter :type
+  filter :created_at
+
   form do |f|
     f.inputs do
       f.input :name

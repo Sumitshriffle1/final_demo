@@ -1,18 +1,24 @@
 ActiveAdmin.register Job do
-
-  # See permitted parameters documentation:
-  # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
-  #
-  # Uncomment all parameters which should be permitted for assignment
-  #
   permit_params :job_title, :company_name, :job_category, :job_description, :salary, :location, :post, :user_id
-  #
-  # or
-  #
-  # permit_params do
-  #   permitted = [:job_title, :company_name, :job_category, :job_description, :salary, :location, :post, :user_id]
-  #   permitted << :other if params[:action] == 'create' && current_user.admin?
-  #   permitted
-  # end
-
+  
+  index do
+    selectable_column
+    id_column
+    column :job_title
+    column :company_name
+    column :job_category
+    column :job_description
+    column :salary
+    column :post
+    column :user_id
+    column :location
+    actions
+  end
+  filter :job_title
+  filter :job_category
+  filter :job_description
+  filter :company_name
+  filter :salary
+  filter :location
+  filter :user_id
 end

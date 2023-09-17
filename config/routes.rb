@@ -23,6 +23,4 @@ Rails.application.routes.draw do
       get 'view_accepted_apply'
     end
   end
-
-  match "*path", to: "application#invalid_url", via: :all
 end
