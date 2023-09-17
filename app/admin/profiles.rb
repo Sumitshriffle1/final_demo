@@ -9,7 +9,7 @@ ActiveAdmin.register Profile do
     column :experience
     column :user_id
     column :image do |img|
-      image_tag url_for(img.image),size: 5*5
+      image_tag url_for(img.image),size: "20x20"
     end
     actions
   end
