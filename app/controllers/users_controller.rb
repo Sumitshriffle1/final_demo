@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :authenticate_request, except: [:create, :user_login]
+  before_action :authenticate_request, except: [:create, :user_login,:forgot,:reset]
 
   # ..................Create User......................
   def create
@@ -62,6 +62,43 @@ class UsersController < ApplicationController
       render json: { message: 'No record found...' }, status: :not_found
     end
   end
+
+  def forgot
+    if params[:email].blank?
+      return render json: {error: "Email not present"}
+    end
+
+    user = User.find_by(email: params[:email])
+
+    if user.present?
+      user.generate_password_token!
+      UserMailer.with(user: user).token_email.deliver_later
+      render json: {status: "ok"}, status: :ok
+    else
+      render json: {error: ["Email address not found. Please check and try again."]}, status: :not_found
+    end
+  end
+
+  def reset
+    token = params[:token].to_s
+
+    if params[:email].blank?
+      return render json: {error: "Token not present"}
+    end
+
+    user = User.find_by(reset_password_token: token)
+
+    if user.present? && user.password_token_valid?
+      if user.reset_password!(params[:password_digest])
+        render json: {status: "ok"}, status: :ok
+      else
+        render json: {error: user.errors.full_messages}, status: :unprocessable_entity
+      end
+    else
+      render json: {error:  ["Link not valid or expired. Try generating a new link."]}, status: :not_found
+    end
+  end
+
 
   private
   def set_params

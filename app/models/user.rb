@@ -9,6 +9,24 @@ class User < ApplicationRecord
   validates :password_digest, length: { minimum: 8 }
   validates :contact,format: {with:/\d[0-9]\z/}, length: { is: 10 }, uniqueness: true
 
+  def generate_password_token!
+    self.reset_password_token = generate_token
+    self.reset_password_sent_at = Time.now.utc
+    save!
+  end
+  def password_token_valid?
+    (self.reset_password_sent_at + 4.hours) > Time.now.utc
+  end
+  def reset_password!(password_digest)
+    self.reset_password_token = nil
+    self.password_digest = password_digest
+    save!
+  end
+  private
+  def generate_token
+    SecureRandom.hex(10)
+  end
+
   def self.ransackable_associations(auth_object = nil)
     ["applies", "jobs", "profile"]
   end

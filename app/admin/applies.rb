@@ -1,6 +1,6 @@
 ActiveAdmin.register Apply do
   permit_params :status, :job_id, :user_id,:resume
-  
+
   index do
     selectable_column
     id_column
@@ -8,7 +8,7 @@ ActiveAdmin.register Apply do
     column :job_id
     column :user_id
     column :resume do |apply|
-      link_to "Download Resume", apply.resume.url
+      link_to "Resume", apply.resume.url
     end
     actions
   end
