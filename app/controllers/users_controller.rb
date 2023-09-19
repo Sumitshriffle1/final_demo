@@ -71,9 +71,9 @@ class UsersController < ApplicationController
     user = User.find_by(email: params[:email])
 
     if user.present?
-      user.generate_password_token!
+      user.generate_password_token
       UserMailer.with(user: user).token_email.deliver_later
-      render json: {status: "ok"}, status: :ok
+      render json: {status: "Token sent to your mail"}, status: :ok
     else
       render json: {error: ["Email address not found. Please check and try again."]}, status: :not_found
     end
@@ -89,13 +89,13 @@ class UsersController < ApplicationController
     user = User.find_by(reset_password_token: token)
 
     if user.present? && user.password_token_valid?
-      if user.reset_password!(params[:password_digest])
-        render json: {status: "ok"}, status: :ok
+      if user.reset_password(params[:password_digest])
+        render json: {status: "Password reset successfully"}, status: :ok
       else
         render json: {error: user.errors.full_messages}, status: :unprocessable_entity
       end
     else
-      render json: {error:  ["Link not valid or expired. Try generating a new link."]}, status: :not_found
+      render json: {error:  ["Token not valid or expired. Try generating a new Token."]}, status: :not_found
     end
   end
 
