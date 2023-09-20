@@ -2,8 +2,8 @@ Rails.application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
   post "user_login", to: "users#user_login"
-  post 'users/forgot', to: 'users#forgot'
-  post 'users/reset', to: 'users#reset'
+  post 'users/forgot_password', to: 'users#forgot_password'
+  post 'users/reset_password', to: 'users#reset_password'
   resource :users do
     get 'search_user_by_name',on: :collection
     resource :profiles
