@@ -64,12 +64,7 @@ class UsersController < ApplicationController
   end
 
   def forgot_password
-    if params[:email].blank?
-      return render json: {error: "Email not present"}
-    end
-
     user = User.find_by(email: params[:email])
-
     if user.present?
       user.generate_password_token
       UserMailer.with(user: user).token_email.deliver_later
@@ -82,20 +77,19 @@ class UsersController < ApplicationController
   def reset_password
     token = params[:token].to_s
 
-    if params[:email].blank?
-      return render json: {error: "Token not present"}
-    end
-
-    user = User.find_by(reset_password_token: token)
-
-    if user.present? && user.password_token_valid?
-      if user.password_reset(params[:password_digest])
-        render json: {status: "Password reset successfully"}, status: :ok
+    if params[:email].present?
+      user = User.find_by(reset_password_token: token)
+      if user.present? && user.password_token_valid?
+        if user.password_reset(params[:password_digest])
+          render json: {status: "Password reset successfully"}, status: :ok
+        else
+          render json: {error: user.errors.full_messages}, status: :unprocessable_entity
+        end
       else
-        render json: {error: user.errors.full_messages}, status: :unprocessable_entity
+        render json: {error:  ["Token not valid or expired. Try generating a new Token."]}, status: :not_found
       end
     else
-      render json: {error:  ["Token not valid or expired. Try generating a new Token."]}, status: :not_found
+      return render json: {error: "Email not present"}
     end
   end
 
