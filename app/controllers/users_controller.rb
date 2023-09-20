@@ -70,7 +70,7 @@ class UsersController < ApplicationController
       UserMailer.with(user: user).token_email.deliver_later
       render json: {status: "Token sent to your mail"}, status: :ok
     else
-      render json: {error: ["Email address not found. Please check and try again."]}, status: :not_found
+      render json: {error: "Email address not found. Please check and try again."}, status: :not_found
     end
   end
 
@@ -86,10 +86,10 @@ class UsersController < ApplicationController
           render json: {error: user.errors.full_messages}, status: :unprocessable_entity
         end
       else
-        render json: {error:  ["Token not valid or expired. Try generating a new Token."]}, status: :not_found
+        render json: {error: "Token not valid or expired. Try generating a new Token."}, status: :not_found
       end
     else
-      return render json: {error: "Email not present"}
+      render json: {error: "Email not present"}
     end
   end
 
